@@ -13,8 +13,8 @@ Because I want to try my hand at creating something new and unique.  I don't exp
 
 ## Requirements
 
-Jedi is being written in [Io](http://iolanguage.com/), and targeting the Io Virtual Machine.  Future implementations may target [Caribou](https://github.com/jeremytregunna/caribou).
+Jedi is being written in [Io](http://www.iolanguage.com/), and targeting the Io Virtual Machine.  Future implementations may target [Caribou](https://github.com/jeremytregunna/caribou).
 
 ## License
 
-See [license/license.txt](https://raw.github.com/gatesphere/jedi/license/license.txt) for terms and conditions.
+See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/license.txt) for terms and conditions.
