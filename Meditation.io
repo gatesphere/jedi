@@ -8,12 +8,13 @@ Meditation := Object clone do(
   contemplations := list
   
   init := method(
-    input = list
-    output = list
-    contemplations = list
+    self input = list
+    self output = list
+    self contemplations = list
   )
   
   register := method(contemplation,
+    //writeln("registering contemplation " .. contemplation)
     self contemplations = self contemplations append(contemplation)
     self
   )
@@ -24,11 +25,15 @@ Meditation := Object clone do(
   )
 
   load := method(
+    //writeln("meditation loading...")
     self contemplations foreach(c, c load)
-    self contemplations first feed(self input pop)
+    if (self input size != 0,
+      self contemplations first feed(self input pop)
+    )
   )
   
   calculate := method(
+    //writeln("meditation calculating...")
     self contemplations foreach(c, c calculate)
   )
 )

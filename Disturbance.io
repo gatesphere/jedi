@@ -6,28 +6,41 @@ Disturbance := Object clone do(
   body ::= block(x, x)
   destination ::= nil
   data := nil
+  filter ::= block(true) // unfiltered by default
   
   init := method(
-    body = block(x, x)
-    destination := nil
-    data = nil
+    self body = block(x, x)
+    self destination := nil
+    self data = nil
   )
   
-  condition := method(in, true) // unfiltered by default
+  condition := method(in,  
+    self filter call(in)
+  )
   
   feed := method(in,
+    //writeln("fed data: " .. in)
     self data = in
+    //writeln(self data)
     self
   )
   
   load := method(
-    self destination feed(self data)
-    self data = nil
+    //writeln("disturbance loading...")
+    if (self data != nil,
+      self destination feed(self data);
+      self data = nil
+    )
     self
   )
   
   calculate := method(
-    self data = self body call(self data)
+    //writeln("disturbance calculating...")
+    //writeln(self data)
+    if(self data != nil,
+      self data = self body call(self data)
+    )
+    //writeln("  " .. self data)
   )
   
 )

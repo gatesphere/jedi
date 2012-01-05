@@ -23,14 +23,17 @@ Clock := Object clone do(
   )
   
   register := method(meditation,
+    //writeln("registering " .. meditation)
     self meditations = self meditations append(meditation)
     self
   )
   
   start := method(self run)
   run := method(
+    //writeln("running clock...")
     loop(
-      self tick
+      self tick;
+      //wait(2)
     )
   )
 

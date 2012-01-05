@@ -8,40 +8,47 @@ Contemplation := Object clone do(
   data := nil
   
   init := method(
-    body = block(x, x)
-    disturbances := list
-    data = nil
+    self body = block(x, x)
+    self disturbances = list
+    self data = nil
   )
   
   register := method(disturbance,
+    //writeln("registering disturbance " .. disturbance)
     self disturbances = self disturbances append(disturbance)
     self
   )
   
   feed := method(in,
+    //writeln("c fed data: " .. in)
     self data = in
     self
   )
   
   load := method(
+    //writeln("contemplation loading...")
     // push forward data in disturbances
     self disturbances foreach(d, d load)
     // delegate to proper disturbance
     self disturbances foreach(d,
-      if(d condition(self data), 
+      if(self data != nil and d condition(self data),
         d feed(self data); 
-        self data = nil; 
+        self data = nil;
         break
       )
-      if(self data != nil,
-        Exception raise("No match for " .. self data .. " in Contemplation " .. self uniqueId);
-        self println
-      )
+    )
+    if(self data != nil and self disturbances size != 0,
+      Exception raise("No match for " .. self data .. " in Contemplation " .. self uniqueId);
+      self println
     )
   )
   
   calculate := method(
-    self data = self body call(self data)
+    //writeln("contemplation calculating...")
+    if(self data != nil,
+      self data = self body call(self data)
+    )
+    self disturbances foreach(d, d calculate)
   )
   
 )
