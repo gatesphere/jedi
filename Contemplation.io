@@ -20,6 +20,7 @@ Contemplation := Object clone do(
   
   feed := method(in,
     self data = in
+    self
   )
   
   load := method(
