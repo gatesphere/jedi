@@ -1,3 +1,7 @@
+// jedi programming language
+// Jacob M. Peck
+// 20120104
+
 Clock := Object clone do(
   clone := method(self) // singleton
   
@@ -20,7 +24,7 @@ Clock := Object clone do(
   start := method(self run)
   run := method(
     loop(
-      tick
+      self tick
     )
   )
 
