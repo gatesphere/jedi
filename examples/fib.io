@@ -4,9 +4,10 @@
 
 // Fibonacci number generator example
 
-doFile("Tuple.io")
+// load the jedi language
+doFile("../src/jedi.io")
 
-// get nth fib number
+// get nth fib number (not jedi style... this is in Io)
 n := System args at(1)
 if(n == nil,
   writeln("usage:\n  io fib.io n\nwill calculate the nth Fibonacci number.");
@@ -19,7 +20,7 @@ fib_machine := Meditation clone
 
 // define the contemplations
 start := Contemplation clone setBody(block(x, x))
-end := Contemplation clone setBody(block(x, writeln(x); System exit))
+end := Contemplation clone setBody(block(x, echo(x); die(x)))
 
 // define the disturbances
 calc := Disturbance clone 

@@ -4,12 +4,15 @@
 
 // hello world example
 
+// load the jedi language
+doFile("../src/jedi.io")
+
 // define the machine
 echo_machine := Meditation clone
 
 // define the contemplations
-start := Contemplation clone setBody(block(x, writeln(x); x))
-end := Contemplation clone setBody(block(x, System exit))
+start := Contemplation clone setBody(block(x, echo(x)))
+end := Contemplation clone setBody(block(x, die(x)))
 
 // define the disturbances
 done := Disturbance clone setDestination(end)
