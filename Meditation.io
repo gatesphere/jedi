@@ -15,10 +15,12 @@ Meditation := Object clone do(
   
   register := method(contemplation,
     self contemplations = self contemplations append(contemplation)
+    self
   )
     
   addInput := method(in,
     self input := self input append(in)
+    self
   )
 
   load := method(

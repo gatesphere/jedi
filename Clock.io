@@ -4,6 +4,7 @@
 
 Clock := Object clone do(
   clone := method(self) // singleton
+  meditations := list
   
   tickNum ::= 0
   
@@ -15,10 +16,15 @@ Clock := Object clone do(
     self setTickNum(self tickNum + 1)
     if(negEdge,
       // load
-      writeln("loading"),
+      self meditations foreach(m, m load),
       // posEdge, calculate
-      writeln("calculating")
+      self meditations foreach(m, m calculate)
     )
+  )
+  
+  register := method(meditation,
+    self meditations = self meditations append(meditation)
+    self
   )
   
   start := method(self run)
