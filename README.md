@@ -6,6 +6,8 @@ Copyright (c) 2012, Jacob Peck, All Rights Reserved.
 
 jedi is a small, experimental language focused on two fundamental concepts: immutable state and dataflow.  jedi is not a dataflow language (such as [Mana](https://github.com/jeremytregunna/Mana)), nor is it a functional language (such as [Haskell](http://www.haskell.org/haskellwiki/Haskell)).  Rather, jedi is a representational language founded upon a few featured data types: disturbances and contemplations, which map directly to edges and states of a finite state machine model of computation.
 
+### Syntax example
+
 The syntax might look a little like this:
   
     // this is a comment
@@ -29,14 +31,46 @@ The above would calculate the 5th number in the Fibonacci sequence.  Using the e
   
 Simple enough, right?
 
+### Type system support
+
+Planned types:
+
+    * Primitives
+      * Integer
+      * Float
+      * Char
+      * String
+      * Boolean
+      * Meditation (FSM)
+      * Contemplation (state)
+      * Disturbances (edge)
+      * Functions
+    * Collections
+      * Range
+      * Tuple (fixed-length list)
+      * List
+      * Map
+
 ## Why jedi?  
 
 Because I want to try my hand at creating something new and unique.  I don't expect this language to gain much (if any) traction whatsoever, and I have absolutely no experience in creating a language.  But what better way to learn than to try?
 
 ## Requirements
 
-Jedi is being written in [Io](http://www.iolanguage.com/), and targeting the Io Virtual Machine.  Future implementations may target [Caribou](https://github.com/jeremytregunna/caribou).
+Jedi is being written in [Io](http://www.iolanguage.com/), and targeting Io (on the Io Virtual Machine).  Future implementations may target [Caribou](https://github.com/jeremytregunna/caribou) or the Java Virtual Machine.
+
+For the current Io version, you need a working copy of Io with support for the Range addon.  The binaries of the [iobin project](http://iobin.suspended-chord.info/) should provide this support.
 
 ## License
 
 See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/license.txt) for terms and conditions.
+
+## To do
+
+Here is a short list of things that need to be done:
+
+    * Attach output to end states
+    * Create an error output buffer
+    * Ensure only one piece of data is in a machine at a time
+    * Formally define syntax (write a grammar)
+    * Write a parser/compiler
