@@ -13,14 +13,15 @@ if(n == nil,
   writeln("usage:\n  io fib.io n\nwill calculate the nth Fibonacci number.");
   System exit
 )
-n = n asNumber round
+n = n asNumber round 
 
 // define the meditation
 fib_machine := Meditation clone
 
 // define the contemplations
 start := Contemplation clone setBody(block(x, x))
-end := Contemplation clone setBody(block(x, echo(x); die(x)))
+talk := Contemplation clone setBody(block(x, echo(x)))
+end := Contemplation clone setBody(block(x, die(x)))
 
 // define the disturbances
 calc := Disturbance clone 
@@ -43,17 +44,20 @@ calc setDestination(start)
 
 done := Disturbance clone 
 done setBody(
-  block(x, 
+  block(x,
     x second
   )
 ) 
-done setDestination(end)
+done setDestination(talk)
+
+bye := Disturbance clone setBody(block(x, EndSymbol)) setDestination(end)
 
 // register the disturbances
 start register(calc) register(done)
+talk register(bye)
 
 // register the contemplations
-fib_machine register(start) register(end)
+fib_machine register(start) register(talk) register(end)
 
 // add inputs
 fib_machine addInput(tuple(1,1,n))

@@ -16,10 +16,11 @@ Clock := Object clone do(
     self setTickNum(self tickNum + 1)
     if(negEdge,
       // load
-      self meditations foreach(m, m load),
+      self meditations foreach(m, m @@load),
       // posEdge, calculate
-      self meditations foreach(m, m calculate)
+      self meditations foreach(m, m @@calculate)
     )
+    Scheduler waitForCorosToComplete
   )
   
   register := method(meditation,

@@ -22,7 +22,11 @@ start register(done)
 
 // register the contemplations
 echo_machine register(start) register(end)
-echo_machine addInput("hello, world!")
+echo_machine addInput("Hello, world!")
+echo_machine addInput("I'm feeling awesome!")
+echo_machine addInput("And now I'm done.")
+echo_machine addInput("Bye!")
+echo_machine addInput(EndSymbol)
 
 // register the meditation
 Clock register(echo_machine)

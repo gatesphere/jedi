@@ -14,6 +14,10 @@ Disturbance := Object clone do(
     self data = nil
   )
   
+  isEmpty := method(
+    self data == nil
+  )
+  
   condition := method(in,  
     self filter call(in)
   )
@@ -36,6 +40,7 @@ Disturbance := Object clone do(
   
   calculate := method(
     //writeln("disturbance calculating...")
+    //writeln(self body)
     //writeln(self data)
     if(self data != nil,
       self data = self body call(self data)

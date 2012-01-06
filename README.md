@@ -4,7 +4,7 @@ Copyright (c) 2012, Jacob Peck, All Rights Reserved.
 
 ## Overview
 
-jedi is a small, experimental language focused on two fundamental concepts: immutable state and dataflow.  jedi is not a dataflow language (such as [Mana](https://github.com/jeremytregunna/Mana)), nor is it a functional language (such as [Haskell](http://www.haskell.org/haskellwiki/Haskell)).  Rather, jedi is a representational language founded upon a few featured data types: disturbances and contemplations, which map directly to edges and states of a finite state machine model of computation.
+jedi is a small, experimental language focused on two fundamental concepts: immutable state and dataflow.  jedi is not a dataflow language (such as [Mana](https://github.com/jeremytregunna/Mana)), nor is it a functional language (such as [Haskell](http://www.haskell.org/haskellwiki/Haskell)).  Rather, jedi is a representational language founded upon a few featured data types: disturbances and contemplations, which map directly to edges and states of a finite state machine model of computation, here modeled as a meditation.
 
 ### Syntax example
 
@@ -45,11 +45,20 @@ Planned types:
     * Contemplation (state)
     * Disturbance (edge)
     * Function (filter style: exactly one input and exactly one output)
+    * Symbol
   * Collections
     * Range
     * Tuple (fixed-length list)
     * List
     * Map
+
+### Concurrency
+
+Concurrency is achieved by simply creating and registering multiple meditations before starting the clock.  Each machine will run independently of the other, with separate input and separate output.  The machines will run in lockstep, as the clock's tick is tied directly to the method of propagating data through the pipeline.  Calculations within the independent machines are also performed concurrently, through the use of the actor/coroutine model provided by Io.
+
+### Architecture
+
+In the future, this space will have a writeup of how the architecture works.  For now, suffice it to say that there is a clock, with negative and positive edges on the tick, and each tick first propagates data and then performs calculations.
 
 ## Why jedi?  
 
@@ -71,7 +80,6 @@ Here is a short list of things that need to be done:
 
   * Attach output to end states
   * Create an error output buffer
-  * Ensure only one piece of data is in a machine at a time
   * Formally define syntax (write a grammar)
   * Write a parser/compiler
   * Build standard library

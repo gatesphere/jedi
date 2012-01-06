@@ -9,6 +9,7 @@ doRelativeFile("Contemplation.io")
 doRelativeFile("Disturbance.io")
 
 // load data types
+doRelativeFile("EndSymbol.io")
 doRelativeFile("Tuple.io")
 
 // define built-in functions
@@ -18,7 +19,14 @@ echo := method(x,
 )
 
 die := method(x, // should stop the clock/detach the machine, not kill the system
-  System exit
+  if(x == EndSymbol,
+    System exit,
+    nil
+  )
+)
+
+empty := method(x,
+  nil
 )
 
 // end file
