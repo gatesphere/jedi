@@ -35,21 +35,21 @@ Simple enough, right?
 
 Planned types:
 
-    * Primitives
-      * Integer
-      * Float
-      * Char
-      * String
-      * Boolean
-      * Meditation (FSM)
-      * Contemplation (state)
-      * Disturbances (edge)
-      * Functions
-    * Collections
-      * Range
-      * Tuple (fixed-length list)
-      * List
-      * Map
+  * Primitives
+    * Integer
+    * Float
+    * Char
+    * String
+    * Boolean
+    * Meditation (FSM)
+    * Contemplation (state)
+    * Disturbances (edge)
+    * Functions
+  * Collections
+    * Range
+    * Tuple (fixed-length list)
+    * List
+    * Map
 
 ## Why jedi?  
 
@@ -69,8 +69,8 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
-    * Attach output to end states
-    * Create an error output buffer
-    * Ensure only one piece of data is in a machine at a time
-    * Formally define syntax (write a grammar)
-    * Write a parser/compiler
+  * Attach output to end states
+  * Create an error output buffer
+  * Ensure only one piece of data is in a machine at a time
+  * Formally define syntax (write a grammar)
+  * Write a parser/compiler
