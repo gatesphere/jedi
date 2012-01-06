@@ -43,8 +43,8 @@ Planned types:
     * Boolean
     * Meditation (FSM)
     * Contemplation (state)
-    * Disturbances (edge)
-    * Functions
+    * Disturbance (edge)
+    * Function (filter style: exactly one input and exactly one output)
   * Collections
     * Range
     * Tuple (fixed-length list)
@@ -74,3 +74,5 @@ Here is a short list of things that need to be done:
   * Ensure only one piece of data is in a machine at a time
   * Formally define syntax (write a grammar)
   * Write a parser/compiler
+  * Build standard library
+    * Rewrite Tuple.io
