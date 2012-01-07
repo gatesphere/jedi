@@ -1,6 +1,5 @@
 // jedi programming language
 // Jacob M. Peck
-// 20120104
 
 Contemplation := Object clone do(
   body ::= block(x, x)

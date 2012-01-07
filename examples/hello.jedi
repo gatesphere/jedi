@@ -1,6 +1,5 @@
 // jedi programming language
 // Jacob M. Peck
-// 20120105
 
 // hello world example
 
@@ -22,6 +21,8 @@ start register(done)
 
 // register the contemplations
 echo_machine register(start) register(end)
+
+// add input
 echo_machine addInput("Hello, world!")
 echo_machine addInput("I'm feeling awesome!")
 echo_machine addInput("And now I'm done.")

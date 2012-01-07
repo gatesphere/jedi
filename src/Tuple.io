@@ -1,6 +1,5 @@
 // jedi programming language
 // Jacob M. Peck
-// 20120104
 
 Object tuple := method(
   t := Tuple clone

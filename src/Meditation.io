@@ -1,6 +1,5 @@
 // jedi programming language
 // Jacob M. Peck
-// 20120104
 
 Meditation := Object clone do(
   input := list
