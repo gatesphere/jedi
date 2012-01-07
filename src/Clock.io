@@ -20,15 +20,17 @@ Clock := Object clone do(
       // posEdge, calculate
       self meditations foreach(m, m @@calculate)
     )
-    Scheduler waitForCorosToComplete
+    Scheduler waitForCorosToComplete // synchronize ticks
   )
   
+  // add a meditation to the clock
   register := method(meditation,
     //writeln("registering " .. meditation)
     self meditations = self meditations append(meditation)
     self
   )
   
+  // run the clock
   start := method(self run)
   run := method(
     //writeln("running clock...")

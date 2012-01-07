@@ -9,17 +9,21 @@ Meditation := Object clone do(
   contemplations := list
   sealed := false
   
+  // each meditation is unique
   init := method(
     self input = list
     self output = list
+    self error = list
     self contemplations = list
     self sealed = false
   )
   
+  // ensure single piece of data
   isSealed := method(sealed)
   seal := method(self sealed = true)
   unseal := method(self sealed = false)
   
+  // is it empty?
   isEmpty := method(
     empty := true
     self contemplations foreach(c,
@@ -30,17 +34,21 @@ Meditation := Object clone do(
     empty
   )
   
+  // add contemplation, which also adds a reference to self into the contemplation
   register := method(contemplation,
     //writeln("registering contemplation " .. contemplation)
     self contemplations = self contemplations append(contemplation)
+    contemplation registerParent(self)
     self
   )
-    
+  
+  // add in to the input queue
   addInput := method(in,
     self input := self input append(in)
     self
   )
 
+  // load
   load := method(
     //writeln("meditation loading...")
     self contemplations foreach(c, c @@load)
@@ -53,8 +61,21 @@ Meditation := Object clone do(
     )
   )
   
+  // calculate
   calculate := method(
     //writeln("meditation calculating...")
     self contemplations foreach(c, c @@calculate)
+  )
+  
+  // append to output
+  out := method(x,
+    self output = self output append(x)
+    x
+  )
+  
+  // append to error
+  error := method(x,
+    self error = self error append("Error: .. " .. x)
+    x
   )
 )

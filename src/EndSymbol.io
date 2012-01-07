@@ -6,5 +6,5 @@
 
 EndSymbol := Object clone do(
   clone := method(self)  // singleton
-  asString := ":endsymbol"
+  asString := ":___end___"
 )

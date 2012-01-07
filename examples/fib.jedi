@@ -7,11 +7,11 @@
 // load the jedi language
 doFile("../src/jedi.io")
 
-// get nth fib number (not jedi style... this is in Io)
+// get nth fib number (not jedi style... this is partially Io)
 n := System args at(1)
 if(n == nil,
-  writeln("usage:\n  io fib.jedi n\nwill calculate the nth Fibonacci number.");
-  System exit
+  echo("usage:\n  io fib.jedi n\nwill calculate the nth Fibonacci number.");
+  die(EndSymbol)
 )
 n = n asNumber round 
 

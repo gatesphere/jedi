@@ -18,15 +18,38 @@ echo := method(x,
   x
 )
 
-die := method(x, // should stop the clock/detach the machine, not kill the system
+echoNoNewLine := method(x,
+  write(x)
+  x
+)
+
+detach := method(x, // should detach the machine without stopping the clock
+  die(x)
+)
+
+die := method(x, // should stop the clock and detach the machine, not kill the program
   if(x == EndSymbol,
     System exit,
     nil
   )
 )
 
+pause := method(x, // should stop the clock
+  die(x)
+)
+
+
+
 empty := method(x,
   nil
+)
+
+out := method(x,
+  self parent out(x)
+)
+
+error := method(x,
+  self parent error(x)
 )
 
 // end file

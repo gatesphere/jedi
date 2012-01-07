@@ -78,9 +78,10 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
-  * Attach output to end states
-  * Create an error output buffer
+  * Work on clock: pause/restart, detach meditations
+  * Organize the whole system in a jedi namespace
   * Formally define syntax (write a grammar)
   * Write a parser/compiler
   * Build standard library
     * Rewrite Tuple.io
+    * Symbol.io

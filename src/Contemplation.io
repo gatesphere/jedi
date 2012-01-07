@@ -6,13 +6,17 @@ Contemplation := Object clone do(
   body ::= block(x, x)
   disturbances := list
   data := nil
+  parent := nil
   
+  // each contemplation is unique
   init := method(
     self body = block(x, x)
     self disturbances = list
     self data = nil
+    self parent = nil
   )
   
+  // is it empty?
   isEmpty := method(
     empty := true
     if(self data != nil,
@@ -26,18 +30,28 @@ Contemplation := Object clone do(
     empty
   )
   
+  // register a disturbance, adding a reference to self as parent
   register := method(disturbance,
     //writeln("registering disturbance " .. disturbance)
     self disturbances = self disturbances append(disturbance)
+    disturbance registerParent(self)
     self
   )
   
+  // register the parent meditation
+  registerParent := method(meditation,
+    self parent = meditation
+    self
+  )
+  
+  // insert data
   feed := method(in,
     //writeln("c fed data: " .. in)
     self data = in
     self
   )
   
+  // load
   load := method(
     //writeln("contemplation loading...")
     // push forward data in disturbances
@@ -56,6 +70,7 @@ Contemplation := Object clone do(
     )
   )
   
+  // calculate
   calculate := method(
     //writeln("contemplation calculating...")
     //writeln(self body)
@@ -63,6 +78,16 @@ Contemplation := Object clone do(
       self data = self body call(self data)
     )
     self disturbances foreach(d, d @@calculate)
+  )
+  
+  // support for out(x) function
+  out := method(x,
+    self parent out(x)
+  )
+
+  // support for error(x) function
+  error := method(x,
+    self parent error(x)
   )
   
 )
