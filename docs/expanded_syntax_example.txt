@@ -1,0 +1,31 @@
+// defining a meditation
+machine_name [
+  state :: fn(x) = x -> // first state defined is always the start state, regardless of name
+  | cond :: fn(x) = x * 2 -> state
+  | cond -> end
+  
+  end :: fn(x) = die(x) // default end state, exists in every machine, can be replaced by .
+]
+
+// declare vars and named functions
+consider --
+  var = 14
+  var2 = [some..range]
+  var3 = [some,list,of,items]
+  var4 = {:some => "map", :that => "maps stuff"}
+  var5 = (this,is,a,tuple)
+  def echoout [ fn(x) = echo(out(x)) ] 
+  // a function definition (must be exactly 1 parameter and 1 output... 
+  // multiple commands are formed by function composition as shown above
+--
+
+reflect --
+  var4 :> var2 :> var :> machine_name :> output_var 
+--
+// the above section creates a list [var4, var2, var], and adds it as input to
+// machine_name (automatically attaching it to the clock), and attaching it's
+// output stream to output_var (which may be another machine, or a variable)
+
+meditate // start the clock, which runs until it is paused or all machines are unattached
+
+// define more machines, attach, meditate again, etc...

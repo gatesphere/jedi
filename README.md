@@ -16,10 +16,14 @@ The syntax might look a little like this:
         | (_,y,0) :: fn((_,y,0)) = y -> end // this is a disturbance (edge) with output (Mealy)
         | (x,y,z) :: fn((x,y,z)) = (y, x+y, z-1) -> start // Mealy disturbance
       
-      end :: fn(x) = echo(x) -> . // this is a contemplation with output (Moore style).  The . denotes an end state.
+      end :: fn(x) = die(echo(x)) -> . // this is a contemplation with output (Moore style).  The . denotes an end state.
     ] // end fib_machine
     
-    (1,1,5) :> fib_machine // this attaches the tuple (1,1,5) to fib_machine's input and starts fib_machine
+    reflect --
+    (1,1,5) :> fib_machine // this attaches the tuple (1,1,5) to fib_machine's input
+    --
+    
+    meditate // this starts the clock
   
 The above would calculate the 5th number in the Fibonacci sequence.  Using the example above as a guide, a hello world example could be built as follows:
 
@@ -27,8 +31,12 @@ The above would calculate the 5th number in the Fibonacci sequence.  Using the e
       start :: fn(x) = echo(x) -> .
     ]
     
+    reflect --
     "hello, world!" :> echo_machine
-  
+    --
+    
+    meditate
+    
 Simple enough, right?
 
 ### Type system support
@@ -78,10 +86,14 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
+  * Make input/output ports, so meditations may be linked together
   * Work on clock: pause/restart, detach meditations
-  * Organize the whole system in a jedi namespace
+  * Organize the whole system in a jedi namespace (may not be necessary?)
   * Formally define syntax (write a grammar)
-  * Write a parser/compiler
+  * Write a lexer/parser/compiler
+    * Make a parse-table
+    * Internal ID generator
+    * Compile to valid Io code
   * Build standard library
     * Rewrite Tuple.io
     * Symbol.io

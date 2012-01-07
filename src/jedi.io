@@ -14,12 +14,16 @@ doRelativeFile("Tuple.io")
 
 // define built-in functions
 echo := method(x,
-  writeln(x)
+  if (x != EndSymbol,
+    echoNoNewLine(x .. "\n")
+  )
   x
 )
 
 echoNoNewLine := method(x,
-  write(x)
+  if(x != EndSymbol,
+    write(x)
+  )
   x
 )
 
@@ -37,8 +41,6 @@ die := method(x, // should stop the clock and detach the machine, not kill the p
 pause := method(x, // should stop the clock
   die(x)
 )
-
-
 
 empty := method(x,
   nil
