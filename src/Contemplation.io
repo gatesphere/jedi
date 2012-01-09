@@ -74,7 +74,7 @@ Contemplation := Object clone do(
     //writeln("contemplation calculating...")
     //writeln(self body)
     if(self data != nil,
-      self data = self body call(self data)
+      self data = self body clone setScope(self) call(self data)
     )
     self disturbances foreach(d, d @@calculate)
   )

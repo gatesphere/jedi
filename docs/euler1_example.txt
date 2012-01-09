@@ -1,0 +1,69 @@
+// theoretical solution to Project Euler, problem 1, in jedi
+
+// phase 1: generate multiples of three and five
+mult_3 [
+  start_mult_3 ->
+    | x || x % 3 == 0 :: fn(x) = out(x) -> start_mult_3
+    | :___end___ -> end_mult_3
+    | _ :: fn(x) = empty(x) -> start_mult_3
+  end_mult_3 :: fn(x) = die(x) -> .
+]
+
+mult_5 [
+  start_mult_5 ->
+    | x || x % 5 == 0 :: fn(x) = out(x) -> start_mult_5
+    | :___end___ -> end_mult_5
+    | _ :: fn(x) = empty(x) -> start_mult_5
+  end_mult_5 :: fn(x) = die(x) -> .
+]
+
+reflect --
+  [1..999] :> :___end___ :> mult_3
+  [1..999] :> :___end___ :> mult_5
+  mult_3 :> out_35
+  mult_5 :> out_35
+--
+
+meditate
+
+
+// phase 2: strip out duplicates
+unique [
+  start_unique ->
+    | :___end___ -> end_unique
+    | _ :: fn(x) = tuple(x, []) -> work_unique
+  work_unique ->
+    | x || size(x first) == 0 :: fn(x) = out(x second) -> done_unique
+    | (contains((x second, x first first))) :: fn(x) = (x first rest, x second) -> work_unique
+    | _ :: fn(x) = (x first rest, x second ++ x first first) -> work_unique
+  done_unique :: fn(x) = :___end___ ->
+    | _ -> end_unique
+  end_unique :: fn(x) = die(x) -> .
+]
+
+reflect --
+  [out_35] :> :___end___ :> unique
+  unique :> out_unique
+--
+
+meditate
+
+
+// phase 3: add them all together
+adder [
+  start_adder ->
+    | :___end___ -> end_adder
+    | _ :: fn(x) = (x, 0) -> work_adder
+  work_adder ->
+    | (x || size(x first) == 0) :: fn(x) = out(echo(x)) -> done_adder
+    | _ :: fn(x) = (x first rest, x second + x first first) -> work_adder
+  done_adder :: fn(x) = :___end___ ->
+    | _ -> end_adder
+  end_adder :: fn(x) = die(x) -> .
+]
+
+reflect --
+  [out_unique] :> :___end___ :> adder
+--
+
+meditate

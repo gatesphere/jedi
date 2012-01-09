@@ -46,6 +46,12 @@ Meditation := Object clone do(
     self input := self input append(in)
     self
   )
+  
+  // add each item of in into the queue
+  addInputList := method(in,
+    in foreach(i, self addInput(i))
+    self
+  )
 
   // load
   load := method(

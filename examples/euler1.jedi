@@ -1,0 +1,224 @@
+// jedi programming language
+// Jacob M. Peck
+
+// solution to Project Euler, problem 1
+// (find the sum of all natural numbers below 1000 which are multiples of 5 or 3)
+
+// Currently does not work.  Using as a test spec for concurrent machines, 
+// I/O ports, and clock manipulations.
+
+doFile("../src/jedi.io")
+
+// phase 1: generate all multiples of 3 and 5 between 0 and 999, inclusive
+
+// generate multiples of three
+// jedi version
+/*
+mult_3 [
+  start_mult_3 ->
+    | :___end___ -> end_mult_3
+    | x || x % 3 == 0 :: fn(x) = empty(out(x)) -> start_mult_3
+    | _ :: fn(x) = empty(x) -> start_mult_3
+  end_mult_3 :: fn(x) = die(x) -> .
+]
+*/
+
+// io prototype
+mult_3 := Meditation clone
+  start_mult_3 := Contemplation clone
+  end_mult_3 := Contemplation clone setBody(block(x, die(x)))
+  die_mult_3 := Disturbance clone
+    die_mult_3 setFilter(block(x, x == EndSymbol))
+    die_mult_3 setDestination(end_mult_3)
+  true_mult_3 := Disturbance clone 
+    true_mult_3 setFilter(block(x, x % 3 == 0)) 
+    true_mult_3 setBody(block(x, empty(out(x)))) 
+    true_mult_3 setDestination(start_mult_3)
+  false_mult_3 := Disturbance clone
+    false_mult_3 setBody(block(x, empty(x)))
+    false_mult_3 setDestination(start_mult_3)
+  start_mult_3 register(die_mult_3) register(true_mult_3) register(false_mult_3)
+mult_3 register(start_mult_3) register(end_mult_3)
+
+// generate multiples of five
+// jedi version
+/*
+mult_5 [
+  start_mult_5 ->
+    | x || x % 5 == 0 :: fn(x) = empty(out(x)) -> start_mult_5
+    | :___end___ -> end_mult_5
+    | _ :: fn(x) = empty(x) -> start_mult_5
+  end_mult_5 :: fn(x) = die(x) -> .
+]
+*/
+
+// io prototype
+mult_5 := Meditation clone
+  start_mult_5 := Contemplation clone
+  end_mult_5 := Contemplation clone setBody(block(x, die(x)))
+  die_mult_5 := Disturbance clone
+    die_mult_5 setFilter(block(x, x == EndSymbol))
+    die_mult_5 setDestination(end_mult_5)
+  true_mult_5 := Disturbance clone 
+    true_mult_5 setFilter(block(x, x % 5 == 0)) 
+    true_mult_5 setBody(block(x, empty(out(x)))) 
+    true_mult_5 setDestination(start_mult_5)
+  false_mult_5 := Disturbance clone
+    false_mult_5 setBody(block(x, empty(x)))
+    false_mult_5 setDestination(start_mult_5)
+  start_mult_5  register(die_mult_5) register(true_mult_5) register(false_mult_5)
+mult_5 register(start_mult_5) register(end_mult_5)
+
+// add input lists
+// jedi version
+/*
+reflect --
+  [0..999] :> :___end___ :> mult_3
+  [0..999] :> :___end___ :> mult_5
+  mult_3 :> out_35
+  mult_5 :> out_35
+--
+*/
+
+mult_3 addInputList(1 to(999) asList) addInput(EndSymbol)
+mult_5 addInputList(1 to(999) asList) addInput(EndSymbol)
+
+// connect to output port (same port, intermingle data)
+out_35 := list
+
+//mult_3 addOutput(out_35)
+//mult_5 addOutput(out_35)
+
+// register the two machines
+Clock register(mult_3) register(mult_5)
+
+// run until they both die
+meditate
+
+
+// phase 2: strip duplicates from the output list 
+// unique machine
+// jedi version
+/*
+unique [
+  start_unique ->
+    | :___end___ -> end_unique
+    | _ :: fn(x) = tuple(x, []) -> work_unique
+  work_unique ->
+    | x || size(x first) == 0 :: fn(x) = out(x second) -> done_unique
+    | (contains((x second, x first first))) :: fn(x) = (x first rest, x second) -> work_unique
+    | _ :: fn(x) = (x first rest, x second ++ x first first) -> work_unique
+  done_unique :: fn(x) = :___end___ ->
+    | _ -> end_unique
+  end_unique :: fn(x) = die(x) -> .
+]
+*/
+
+// io prototype
+unique := Meditation clone
+  start_unique := Contemplation clone
+  work_unique := Contemplation clone
+  done_unique := Contemplation clone setBody(block(x, EndSymbol))
+  end_unique := Contemplation clone setBody(block(x, die(x)))
+  
+  die_unique := Disturbance clone
+    die_unique setFilter(block(x, x == EndSymbol))
+    die_unique setDestination(end_unique)
+  prepare_unique := Disturbance clone
+    prepare_unique setBody(block(x, tuple(x, list)))
+    prepare_unique setDestination(work_unique)
+  
+  empty_unique := Disturbance clone
+    empty_unique setFilter(block(x, size(x first) == 0))
+    empty_unique setBody(block(x, out(x second)))
+    empty_unique setDestination(done_unique)
+  false_unique := Disturbance clone
+    false_unique setFilter(block(x, contains(tuple(x second, x first first))))
+    false_unique setBody(block(x, tuple(x first rest, x second)))
+    false_unique setDestination(work_unique)
+  true_unique := Disturbance clone
+    true_unique setBody(block(x, tuple(x first rest, x second append(x first first))))
+    true_unique setDestination(work_unique)
+    
+  die2_unique := Disturbance clone setDestination(end_unique)
+  
+  start_unique register(die_unique) register(prepare_unique)
+  work_unique register(empty_unique) register(false_unique) register(true_unique)
+  done_unique register(die2_unique)
+unique register(start_unique) register(work_unique) register(done_unique) register(end_unique)
+
+// add input as a list of all previous output
+// jedi version
+/*
+reflect --
+  [out_35] :> :___end___ :> unique
+  unique :> out_unique
+--
+*/
+
+// io version
+unique addInput(list(out_35)) addInput(EndSymbol)
+
+// set output port
+out_unique := list
+unique addOutput(out_unique)
+
+// register machine
+Clock register(unique)
+
+// run until it dies
+meditate
+
+
+// phase 3: add them all together
+// adder machine
+// jedi version
+/*
+adder [
+  start_adder ->
+    | :___end___ -> end_adder
+    | _ :: fn(x) = (x, 0) -> work_adder
+  work_adder ->
+    | (x || size(x first) == 0) :: fn(x) = out(echo(x)) -> done_adder
+    | _ :: fn(x) = (x first rest, x second + x first first) -> work_adder
+  done_adder :: fn(x) = :___end___ ->
+    | _ -> end_adder
+  end_adder :: fn(x) = die(x) -> .
+]
+*/
+
+// io prototype
+adder := Meditation clone
+  start_adder := Contemplation clone
+  work_adder := Contemplation clone
+  done_adder := Contemplation clone setBody(block(x, EndSymbol))
+  end_adder := Contemplation clone setBody(block(x, die(x)))
+  
+  die_adder := Disturbance clone
+    die_adder setFilter(block(x, x == EndSymbol))
+    die_adder setDestination(end_adder)
+  prepare_adder := Disturbance clone
+    prepare_adder setBody(x, tuple(x, 0))
+    prepare_adder setDestination(work_adder)
+
+  empty_adder := Disturbance clone
+    empty_adder setFilter(block(x, size(x first) == 0))
+    empty_adder setBody(block(x, out(echo(x))))
+    empty_adder setDestination(done_adder)
+  add_adder := Disturbance clone
+    add_adder setBody(block(x, tuple(x first rest, x second + x first first)))
+    add_adder setDestination(work_adder)
+  
+  die2_adder := Disturbance clone setDestination(end_adder)
+  
+  start_adder register(die_adder) register(prepare_adder)
+  work_adder register(empty_adder) register(add_adder)
+  done_adder register(die2_adder)
+adder register(start_adder) register(work_adder) register(done_adder) register(end_adder)
+
+adder addInput(list(out_unique)) addInput(EndSymbol)
+
+Clock register(adder)
+
+meditate
+

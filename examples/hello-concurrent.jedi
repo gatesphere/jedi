@@ -45,4 +45,4 @@ echo_machine_2 addInput(EndSymbol)
 Clock register(echo_machine_1) register(echo_machine_2)
 
 // start the clock
-Clock start
+meditate

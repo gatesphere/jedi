@@ -10,6 +10,7 @@ doRelativeFile("Disturbance.io")
 // load data types
 doRelativeFile("EndSymbol.io")
 doRelativeFile("Tuple.io")
+Range
 
 // define built-in functions
 echo := method(x,
@@ -45,13 +46,19 @@ empty := method(x,
   nil
 )
 
-out := method(x,
-  self parent out(x)
-)
-
 error := method(x,
   self parent error(x)
 )
+
+contains := method(x, // x is a two-tuple
+  x second contains(x first)
+)
+
+size := method(x,
+  x size
+)
+
+meditate := method(Clock start)
 
 // end file
 nil

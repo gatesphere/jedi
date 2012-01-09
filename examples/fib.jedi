@@ -65,4 +65,4 @@ fib_machine addInput(tuple(1,1,n))
 Clock register(fib_machine)
 
 // start the clock
-Clock start
+meditate

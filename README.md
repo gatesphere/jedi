@@ -55,7 +55,7 @@ Planned types:
     * Function (filter style: exactly one input and exactly one output)
     * Symbol
   * Collections
-    * Range
+    * Range (not lazy evaluation... just rule-based lists)
     * Tuple (fixed-length list)
     * List
     * Map
@@ -88,12 +88,13 @@ Here is a short list of things that need to be done:
 
   * Make input/output ports, so meditations may be linked together
   * Work on clock: pause/restart, detach meditations
+  * Build standard library
+    * Rewrite Tuple.io
+    * Symbol.io
   * Organize the whole system in a jedi namespace (may not be necessary?)
   * Formally define syntax (write a grammar)
   * Write a lexer/parser/compiler
     * Make a parse-table
     * Internal ID generator
     * Compile to valid Io code
-  * Build standard library
-    * Rewrite Tuple.io
-    * Symbol.io
+

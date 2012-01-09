@@ -57,9 +57,14 @@ Disturbance := Object clone do(
     //writeln(self body)
     //writeln(self data)
     if(self data != nil,
-      self data = self body call(self data)
+      self data = self body clone setScope(self) call(self data)
     )
     //writeln("  " .. self data)
+  )
+  
+  // support for out method
+  out := method(x,
+    self parent out(x)
   )
   
 )
