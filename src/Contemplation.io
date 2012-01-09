@@ -32,8 +32,11 @@ Contemplation := Object clone do(
   // register a disturbance, adding a reference to self as parent
   register := method(disturbance,
     //writeln("registering disturbance " .. disturbance)
-    self disturbances = self disturbances append(disturbance)
-    disturbance registerParent(self)
+    if(disturbance type != "Disturbance",
+      Exception raise("Cannot register type " .. disturbance type .. " to a Contemplation."),
+      self disturbances appendIfAbsent(disturbance);
+      disturbance registerParent(self)
+    )
     self
   )
   

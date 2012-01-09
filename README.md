@@ -56,7 +56,7 @@ Planned types:
     * Symbol
   * Collections
     * Range (not lazy evaluation... just rule-based lists)
-    * Tuple (fixed-length list)
+    * Tuple (fixed-length list... used to fake multiple parameter passing, and for simulating state)
     * List
     * Map
 
@@ -66,7 +66,19 @@ Concurrency is achieved by simply creating and registering multiple meditations 
 
 ### Architecture
 
-In the future, this space will have a writeup of how the architecture works.  For now, suffice it to say that there is a clock, with negative and positive edges on the tick, and each tick first propagates data and then performs calculations.
+The architecture of jedi is an abstract virtual machine.  This machine is made of extended finite state machines (meditations), which are in turn composed of states (contemplations) and edges (disturbances), each of which may have behavior in the form of an anonymous filter function, or simply be conditional branching points.  A program in jedi consists of one or more of these meditations linked together by input/output ports, supported by a monolithic clock which governs the control and dataflow of the meditations currently active.
+
+The meditations are strictly limited to a single piece of data at any time, and in fact will seal themselves as soon as a piece of data enters the start state, and unseal themselves as soon as a piece of data is removed (via the empty(x) function).  The first contemplation defined in a meditation is the start state.
+
+The contemplations are states which may or may not have behavior attached to them.  Such behavior is limited to a simple filter function, which may take in exactly one parameter and return exactly one value.  A function may call other functions through function composition to achieve complex results.  However, this need not be a limitation on the code, as with constructs such as tuples and lists (which can be recursively nested as much as needed), great computation can be afforded with a simple filter function.  Also, should the programmer desire, they may implement a form of currying through successive contemplations and disturbances.
+
+The disturbances are edges between the states, guarded by a binary expression which is pattern-matched against the data to enter the disturbance.  The disturbances are checked in order of definition, until a true result is found, at which point, that data enters the disturbance.  Disturbances may have behavior in an identical manner to the contemplations above.  In addition, disturbances have exactly one destination, which must be a contemplation.
+
+The input/output ports are simple queues which are used to connect machines.  Multiple machines may write to them simultaneously, and multiple machines may read from them.  They are implemented as a FIFO queue.
+
+The monolithic clock acts as a control system.  The clock has certain meditations registered to it as active.  When the clock ticks, it is either in a positive edge or a negative edge, in alternating order.  On the negative edges, the clock tells every meditation to load data, i.e., move them along inside the machine.  If a machine is unsealed (and therefore empty), the clock feeds it with the next piece of data from it's input port, if any such data exist.  On the positive edge, the clock tells each active machine to calculate, i.e. run it's functions.  Any contemplation or disturbance with a piece of data currently inside will activate it's function with the data it is currently carrying as it's parameter.  The output of this function will replace the data currently in that location.  When the clock detects that there are no more machines attached to it, it will sleep until told to run again by the `meditate` command.
+
+The standard library will consist of a number of convenience functions.  These functions will be so designed as to allow interactions with the clock and the underlying Io architecture from an isolated and threadsafe environment.
 
 ## Why jedi?  
 
@@ -86,10 +98,9 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
-  * Make input/output ports, so meditations may be linked together
+  * Meditations: assign input ports to allow multiple machines to share the same input
   * Work on clock: pause/restart, detach meditations
   * Build standard library
-    * Rewrite Tuple.io
     * Symbol.io
   * Organize the whole system in a jedi namespace (may not be necessary?)
   * Formally define syntax (write a grammar)

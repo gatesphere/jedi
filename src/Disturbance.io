@@ -3,7 +3,7 @@
 
 Disturbance := Object clone do(
   body ::= block(x, x)
-  destination ::= nil
+  destination := nil
   data := nil
   filter ::= block(true) // unfiltered by default
   parent := nil
@@ -15,6 +15,14 @@ Disturbance := Object clone do(
     self data = nil
     self filter = block(true)
     self parent = nil
+  )
+  
+  setDestination := method(contemplation,
+    if(contemplation type != "Contemplation",
+      Exception raise("Cannot set the destination of a Disturbance to type " .. contemplation type .. "."),
+      self destination = contemplation;
+      self
+    )
   )
   
   // is it empty?

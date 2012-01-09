@@ -2,17 +2,17 @@
 // Jacob M. Peck
 
 Meditation := Object clone do(
-  input := list
-  output := list
-  error := list
+  input := Port clone
+  output := Port clone
+  error := Port clone
   contemplations := list
   sealed := false
   
   // each meditation is unique
   init := method(
-    self input = list
-    self output = list
-    self error = list
+    self input = Port clone
+    self output = Port clone
+    self error = Port clone
     self contemplations = list
     self sealed = false
   )
@@ -36,14 +36,17 @@ Meditation := Object clone do(
   // add contemplation, which also adds a reference to self into the contemplation
   register := method(contemplation,
     //writeln("registering contemplation " .. contemplation)
-    self contemplations = self contemplations append(contemplation)
-    contemplation registerParent(self)
+    if(contemplation type != "Contemplation",
+      Exception raise("Cannot register type " .. contemplation type .. " to a Meditation."),
+      self contemplations appendIfAbsent(contemplation);
+      contemplation registerParent(self)
+    )
     self
   )
   
   // add in to the input queue
   addInput := method(in,
-    self input := self input append(in)
+    self input push(in)
     self
   )
   
@@ -61,7 +64,7 @@ Meditation := Object clone do(
       self unseal
     )
     if(self input size != 0 and self isSealed not,
-      self contemplations first @@feed(self input removeFirst);
+      self contemplations first @@feed(self input pop);
       self seal
     )
   )
@@ -74,13 +77,19 @@ Meditation := Object clone do(
   
   // append to output
   out := method(x,
-    self output = self output append(x)
+    self output push(x)
     x
+  )
+  
+  // allow output to be set to an external port
+  addOutput := method(port,
+    self output = port
+    self
   )
   
   // append to error
   error := method(x,
-    self error = self error append("Error: .. " .. x)
+    self error push("Error: .. " .. x)
     x
   )
 )

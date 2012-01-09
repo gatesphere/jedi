@@ -84,10 +84,10 @@ mult_3 addInputList(1 to(999) asList) addInput(EndSymbol)
 mult_5 addInputList(1 to(999) asList) addInput(EndSymbol)
 
 // connect to output port (same port, intermingle data)
-out_35 := list
+out_35 := Port clone
 
-//mult_3 addOutput(out_35)
-//mult_5 addOutput(out_35)
+mult_3 addOutput(out_35)
+mult_5 addOutput(out_35)
 
 // register the two machines
 Clock register(mult_3) register(mult_5)
@@ -157,10 +157,10 @@ reflect --
 */
 
 // io version
-unique addInput(list(out_35)) addInput(EndSymbol)
+unique addInput(list(out_35 asList)) addInput(EndSymbol)
 
 // set output port
-out_unique := list
+out_unique := Port clone
 unique addOutput(out_unique)
 
 // register machine
@@ -216,7 +216,7 @@ adder := Meditation clone
   done_adder register(die2_adder)
 adder register(start_adder) register(work_adder) register(done_adder) register(end_adder)
 
-adder addInput(list(out_unique)) addInput(EndSymbol)
+adder addInput(list(out_unique asList)) addInput(EndSymbol)
 
 Clock register(adder)
 
