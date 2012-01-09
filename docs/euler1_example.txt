@@ -3,7 +3,7 @@
 // phase 1: generate multiples of three and five
 mult_3 [
   start_mult_3 ->
-    | x || x % 3 == 0 :: fn(x) = out(x) -> start_mult_3
+    | x || x % 3 == 0 :: fn(x) = empty(out(x)) -> start_mult_3
     | :___end___ -> end_mult_3
     | _ :: fn(x) = empty(x) -> start_mult_3
   end_mult_3 :: fn(x) = die(x) -> .
@@ -11,7 +11,7 @@ mult_3 [
 
 mult_5 [
   start_mult_5 ->
-    | x || x % 5 == 0 :: fn(x) = out(x) -> start_mult_5
+    | x || x % 5 == 0 :: fn(x) = empty(out(x)) -> start_mult_5
     | :___end___ -> end_mult_5
     | _ :: fn(x) = empty(x) -> start_mult_5
   end_mult_5 :: fn(x) = die(x) -> .
