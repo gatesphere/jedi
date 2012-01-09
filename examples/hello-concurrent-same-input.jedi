@@ -1,0 +1,50 @@
+// jedi programming language
+// Jacob M. Peck
+
+// hello world example -- concurrent machines
+// uses two identical machines to interleave output
+// this time, the two machines share a single input port
+
+// load the jedi language
+doFile("../src/jedi.io")
+
+// define the machines
+echo_machine_1 := Meditation clone
+echo_machine_2 := Meditation clone
+
+// define the contemplations
+start_1 := Contemplation clone setBody(block(x, echo(x)))
+end_1 := Contemplation clone setBody(block(x, die(x)))
+
+start_2 := Contemplation clone setBody(block(x, echo(x)))
+end_2 := Contemplation clone setBody(block(x, die(x)))
+
+// define the disturbances
+done_1 := Disturbance clone setDestination(end_1)
+
+done_2 := Disturbance clone setDestination(end_2)
+
+// register the disturbances
+start_1 register(done_1)
+
+start_2 register(done_2)
+
+// register the contemplations
+echo_machine_1 register(start_1) register(end_1)
+
+echo_machine_2 register(start_2) register(end_2)
+
+// add inputs
+echo_machine_1 addInput("Hello, world!")
+echo_machine_1 addInput("I'm feeling awesome!")
+echo_machine_1 addInput("And now I'm done.")
+echo_machine_1 addInput("Bye!")
+echo_machine_1 addInput(EndSymbol)
+
+echo_machine_2 addInputPort(echo_machine_1 getInputPort)
+
+// register the meditation
+Clock register(echo_machine_1) register(echo_machine_2)
+
+// start the clock
+meditate

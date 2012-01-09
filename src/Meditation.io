@@ -55,6 +55,15 @@ Meditation := Object clone do(
     in foreach(i, self addInput(i))
     self
   )
+  
+  addInputPort := method(port,
+    self input = port
+    self
+  )
+  
+  getInputPort := method(
+    self input
+  )
 
   // load
   load := method(
@@ -82,9 +91,13 @@ Meditation := Object clone do(
   )
   
   // allow output to be set to an external port
-  addOutput := method(port,
+  addOutputPort := method(port,
     self output = port
     self
+  )
+  
+  getOutputPort := method(
+    self output
   )
   
   // append to error

@@ -98,7 +98,6 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
-  * Meditations: assign input ports to allow multiple machines to share the same input
   * Work on clock: pause/restart, detach meditations
   * Build standard library
     * Symbol.io
