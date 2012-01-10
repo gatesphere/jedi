@@ -33,6 +33,10 @@ Meditation := Object clone do(
     empty
   )
   
+  workToDo := method(
+    (self isEmpty and self input size == 0) not
+  )
+
   // add contemplation, which also adds a reference to self into the contemplation
   register := method(contemplation,
     //writeln("registering contemplation " .. contemplation)
@@ -88,6 +92,19 @@ Meditation := Object clone do(
   out := method(x,
     self output push(x)
     x
+  )
+  
+  detach := method(x, // should detach the machine without stopping the clock
+    Clock deregister(self)
+    x
+  )
+
+  die := method(x, // should stop the clock and detach the machine, not kill the program
+    if(x == EndSymbol,
+      Clock deregister(self);
+      Clock stop
+    )
+    nil
   )
   
   // allow output to be set to an external port

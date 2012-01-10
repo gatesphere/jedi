@@ -10,7 +10,7 @@ doFile("../src/jedi.io")
 n := System args at(1)
 if(n == nil,
   echo("usage:\n  io fib.jedi n\nwill calculate the nth Fibonacci number.");
-  die(EndSymbol)
+  sleep
 )
 n = n asNumber round 
 
@@ -20,7 +20,7 @@ fib_machine := Meditation clone
 // define the contemplations
 start := Contemplation clone setBody(block(x, x))
 talk := Contemplation clone setBody(block(x, echo(x)))
-end := Contemplation clone setBody(block(x, die(x)))
+end := Contemplation clone setBody(block(x, detach(x)))
 
 // define the disturbances
 calc := Disturbance clone 

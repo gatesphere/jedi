@@ -4,14 +4,11 @@
 // solution to Project Euler, problem 1
 // (find the sum of all natural numbers below 1000 which are multiples of 5 or 3)
 
-// Currently does not work.  Using as a test spec for concurrent machines, 
-// I/O ports, and clock manipulations.
-
 doFile("../src/jedi.io")
 
 // phase 1: generate all multiples of 3 and 5 between 0 and 999, inclusive
-
 // generate multiples of three
+echo("Phase 1: generate multiples of three and five.")
 // jedi version
 /*
 mult_3 [
@@ -26,7 +23,7 @@ mult_3 [
 // io prototype
 mult_3 := Meditation clone
   start_mult_3 := Contemplation clone
-  end_mult_3 := Contemplation clone setBody(block(x, die(x)))
+  end_mult_3 := Contemplation clone setBody(block(x, detach(x)))
   die_mult_3 := Disturbance clone
     die_mult_3 setFilter(block(x, x == EndSymbol))
     die_mult_3 setDestination(end_mult_3)
@@ -55,7 +52,7 @@ mult_5 [
 // io prototype
 mult_5 := Meditation clone
   start_mult_5 := Contemplation clone
-  end_mult_5 := Contemplation clone setBody(block(x, die(x)))
+  end_mult_5 := Contemplation clone setBody(block(x, detach(x)))
   die_mult_5 := Disturbance clone
     die_mult_5 setFilter(block(x, x == EndSymbol))
     die_mult_5 setDestination(end_mult_5)
@@ -86,8 +83,8 @@ mult_5 addInputList(1 to(999) asList) addInput(EndSymbol)
 // connect to output port (same port, intermingle data)
 out_35 := Port clone
 
-mult_3 addOutput(out_35)
-mult_5 addOutput(out_35)
+mult_3 addOutputPort(out_35)
+mult_5 addOutputPort(out_35)
 
 // register the two machines
 Clock register(mult_3) register(mult_5)
@@ -96,8 +93,12 @@ Clock register(mult_3) register(mult_5)
 meditate
 
 
+
+
 // phase 2: strip duplicates from the output list 
 // unique machine
+echo("Phase 2: strip duplicates.")
+
 // jedi version
 /*
 unique [
@@ -119,7 +120,7 @@ unique := Meditation clone
   start_unique := Contemplation clone
   work_unique := Contemplation clone
   done_unique := Contemplation clone setBody(block(x, EndSymbol))
-  end_unique := Contemplation clone setBody(block(x, die(x)))
+  end_unique := Contemplation clone setBody(block(x, detach(x)))
   
   die_unique := Disturbance clone
     die_unique setFilter(block(x, x == EndSymbol))
@@ -133,7 +134,7 @@ unique := Meditation clone
     empty_unique setBody(block(x, out(x second)))
     empty_unique setDestination(done_unique)
   false_unique := Disturbance clone
-    false_unique setFilter(block(x, contains(tuple(x second, x first first))))
+    false_unique setFilter(block(x, member(tuple(x second, x first first))))
     false_unique setBody(block(x, tuple(x first rest, x second)))
     false_unique setDestination(work_unique)
   true_unique := Disturbance clone
@@ -157,11 +158,11 @@ reflect --
 */
 
 // io version
-unique addInput(list(out_35 asList)) addInput(EndSymbol)
+unique addInput(out_35 asList) addInput(EndSymbol)
 
 // set output port
 out_unique := Port clone
-unique addOutput(out_unique)
+unique addOutputPort(out_unique)
 
 // register machine
 Clock register(unique)
@@ -172,6 +173,8 @@ meditate
 
 // phase 3: add them all together
 // adder machine
+echo("Phase 3: add all of them together.")
+echoNoNewLine("Answer: ")
 // jedi version
 /*
 adder [
@@ -198,15 +201,15 @@ adder := Meditation clone
     die_adder setFilter(block(x, x == EndSymbol))
     die_adder setDestination(end_adder)
   prepare_adder := Disturbance clone
-    prepare_adder setBody(x, tuple(x, 0))
+    prepare_adder setBody(block(x, tuple(x, 0)))
     prepare_adder setDestination(work_adder)
 
   empty_adder := Disturbance clone
     empty_adder setFilter(block(x, size(x first) == 0))
-    empty_adder setBody(block(x, out(echo(x))))
+    empty_adder setBody(block(x, out(echo(x second))))
     empty_adder setDestination(done_adder)
   add_adder := Disturbance clone
-    add_adder setBody(block(x, tuple(x first rest, x second + x first first)))
+    add_adder setBody(block(x, tuple(x first rest, (x second) + (x first first))))
     add_adder setDestination(work_adder)
   
   die2_adder := Disturbance clone setDestination(end_adder)
@@ -216,9 +219,10 @@ adder := Meditation clone
   done_adder register(die2_adder)
 adder register(start_adder) register(work_adder) register(done_adder) register(end_adder)
 
-adder addInput(list(out_unique asList)) addInput(EndSymbol)
+adder addInputList(out_unique asList) addInput(EndSymbol)
 
 Clock register(adder)
 
 meditate
 
+sleep

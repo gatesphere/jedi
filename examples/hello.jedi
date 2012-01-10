@@ -11,13 +11,14 @@ echo_machine := Meditation clone
 
 // define the contemplations
 start := Contemplation clone setBody(block(x, echo(x)))
-end := Contemplation clone setBody(block(x, die(x)))
+end := Contemplation clone setBody(block(x, detach(x)))
 
 // define the disturbances
-done := Disturbance clone setDestination(end)
+done := Disturbance clone setFilter(block(x, x == EndSymbol)) setDestination(end)
+continue := Disturbance clone setBody(block(x, empty(x))) setDestination(start)
 
 // register the disturbances
-start register(done)
+start register(done) register(continue)
 
 // register the contemplations
 echo_machine register(start) register(end)

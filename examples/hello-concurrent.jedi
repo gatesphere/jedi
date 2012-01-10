@@ -13,26 +13,29 @@ echo_machine_2 := Meditation clone
 
 // define the contemplations
 start_1 := Contemplation clone setBody(block(x, echo(x)))
-end_1 := Contemplation clone setBody(block(x, die(x)))
+end_1 := Contemplation clone setBody(block(x, detach(x)))
 
 start_2 := Contemplation clone setBody(block(x, echo(x)))
-end_2 := Contemplation clone setBody(block(x, die(x)))
+end_2 := Contemplation clone setBody(block(x, detach(x)))
 
 // define the disturbances
-done_1 := Disturbance clone setDestination(end_1)
+done_1 := Disturbance clone setFilter(block(x, x == EndSymbol)) setDestination(end_1)
+continue_1 := Disturbance clone setBody(block(x, empty(x))) setDestination(start_1)
 
-done_2 := Disturbance clone setDestination(end_2)
+done_2 := Disturbance clone setFilter(block(x, x == EndSymbol)) setDestination(end_2)
+continue_2 := Disturbance clone setBody(block(x, empty(x))) setDestination(start_2)
 
 // register the disturbances
-start_1 register(done_1)
+start_1 register(done_1) register(continue_1)
 
-start_2 register(done_2)
+start_2 register(done_2) register(continue_2)
 
 // register the contemplations
 echo_machine_1 register(start_1) register(end_1)
 
 echo_machine_2 register(start_2) register(end_2)
 
+// add input
 echo_machine_1 addInput("1: Hello, world!")
 echo_machine_1 addInput("1: I'm feeling awesome!")
 echo_machine_1 addInput(EndSymbol)

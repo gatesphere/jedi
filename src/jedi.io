@@ -29,18 +29,21 @@ echoNoNewLine := method(x,
 )
 
 detach := method(x, // should detach the machine without stopping the clock
-  die(x)
+  Clock deregister(self)
+  x
 )
 
 die := method(x, // should stop the clock and detach the machine, not kill the program
   if(x == EndSymbol,
-    System exit,
-    nil
+    Clock deregister(self);
+    Clock stop
   )
+  nil
 )
 
 pause := method(x, // should stop the clock
-  die(x)
+  Clock stop
+  x
 )
 
 empty := method(x,
@@ -51,8 +54,8 @@ error := method(x,
   self parent error(x)
 )
 
-contains := method(x, // x is a two-tuple
-  x second contains(x first)
+member := method(x, // x is a two-tuple
+  x first contains(x second)
 )
 
 size := method(x,
@@ -60,6 +63,8 @@ size := method(x,
 )
 
 meditate := method(Clock start)
+
+sleep := method(System exit)
 
 // end file
 nil

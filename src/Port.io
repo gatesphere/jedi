@@ -6,6 +6,10 @@
 Port := Object clone do(
   contents := list
   
+  init := method(
+    contents = list
+  )
+  
   asString := method(
     self contents asString
   )

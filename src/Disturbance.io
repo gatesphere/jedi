@@ -75,4 +75,12 @@ Disturbance := Object clone do(
     self parent out(x)
   )
   
+  detach := method(x, // should detach the machine without stopping the clock
+    self parent detach(x)
+  )
+
+  die := method(x, // should stop the clock and detach the machine, not kill the program
+    self parent detach(x)
+  )
+  
 )

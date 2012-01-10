@@ -98,9 +98,10 @@ See [license/license.txt](https://raw.github.com/gatesphere/jedi/master/license/
 
 Here is a short list of things that need to be done:
 
-  * Work on clock: pause/restart, detach meditations
   * Build standard library
     * Symbol.io
+    * Symbol table
+    * Meditation table (for clock)
   * Organize the whole system in a jedi namespace (may not be necessary?)
   * Formally define syntax (write a grammar)
   * Write a lexer/parser/compiler
