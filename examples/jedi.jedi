@@ -1,0 +1,24 @@
+// jedi programming language
+// Jacob M. Peck
+
+// jedi symbol processor
+
+doFile("../src/jedi.io")
+
+jedi_machine := Meditation clone
+  start := Contemplation clone setBody(block(x, echo(x)))
+  end := Contemplation clone setBody(block(x, detach(echo(x))))
+  
+  je := Disturbance clone setFilter(block(x, x == symbol("j"))) setBody(block(x, symbol("e"))) setDestination(start)
+  ed := Disturbance clone setFilter(block(x, x == symbol("e"))) setBody(block(x, symbol("d"))) setDestination(start)
+  di := Disturbance clone setFilter(block(x, x == symbol("d"))) setBody(block(x, symbol("i"))) setDestination(end)
+  start register(je) register(ed) register(di)
+jedi_machine register(start) register(end)
+
+jedi_machine addInput(symbol("j"))
+
+Clock register(jedi_machine)
+
+meditate
+
+sleep
