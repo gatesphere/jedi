@@ -9,7 +9,8 @@ doRelativeFile("Contemplation.io")
 doRelativeFile("Disturbance.io")
 
 // load data types
-doRelativeFile("EndSymbol.io")
+doRelativeFile("Symbol.io")
+EndSymbol := symbol("___end___")
 doRelativeFile("Tuple.io")
 Range
 
