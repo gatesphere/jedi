@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# jedi programming language
+# Jacob M. Peck
+
+IO=`which io`
+JEDIC="src/compiler/jedic.io"
+
+$IO $JEDIC "$@"
