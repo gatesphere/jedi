@@ -100,11 +100,9 @@ Here is a short list of things that need to be done:
 
   * Build standard library
     * Tuples... need work: restrict mutability
-    * Meditation table (for clock)
   * Organize the whole system in a jedi namespace (may not be necessary?)
   * Formally define syntax (write a grammar)
   * Write a lexer/parser/compiler
     * Make a parse-table
-    * Internal ID generator
     * Compile to valid Io code
 
