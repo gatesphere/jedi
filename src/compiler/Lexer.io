@@ -3,19 +3,57 @@
 
 // TODO:
 // define(sym)
+// detect strings
+// prevent multiple splits... ++ into +,+ and etc.
+
 
 Lexer := Object clone do(
   version := "January 2012"
   
   clone := method(self) // singleton
   
-  embeddedSymbols := list("\"", "..", "(", ")", "[", "]", "->", ":>", "++", "::")
+  embeddedSymbols := Map with(
+    "--", symbol("BLOCK_DELINEATOR"),
+    "reflect", symbol("KW_REFLECT"),
+    "consider", symbol("KW_CONSIDER"),
+    "meditate", symbol("KW_MEDITATE"),
+    "sleep", symbol("KW_SLEEP"),
+    "def", symbol("KW_DEFFUN"),
+    "fn", symbol("KW_ANONFUN"),
+    "..", symbol("OP_RANGETO"),
+    ".", symbol("KW_END"),
+    ":", symbol("OP_SYMBOL"),
+    ",", symbol("KW_NEXT"),
+    "(", symbol("PAREN_LEFT"),
+    ")", symbol("PAREN_RIGHT"),
+    "[", symbol("BRACKET_LEFT"),
+    "]", symbol("BRACKET_RIGHT"),
+    "{", symbol("BRACE_LEFT"),
+    "}", symbol("BRACE_RIGHT"),
+    "|", symbol("KW_DISTURBANCE"),
+    "->", symbol("KW_POINTSTO"),
+    ":>", symbol("OP_ATTACH"),
+    "++", symbol("OP_CONCATENATE"),
+    "::", symbol("KW_BEHAVIOR"),
+    "+", symbol("OP_PLUS"),
+    "-", symbol("OP_MINUS"),
+    "*", symbol("OP_TIMES"),
+    "/", symbol("OP_DIVIDE"),
+    "%", symbol("OP_MODULO"),
+    "||", symbol("OP_WHERE"),
+    "or", symbol("OP_LOGICALOR"),
+    "and", symbol("OP_LOGICALAND"),
+    "not", symbol("OP_LOGICALNOT"),
+    "xor", symbol("OP_LOGICALXOR"),
+    "nand", symbol("OP_LOGICALNAND"),
+    "=", symbol("OP_ASSIGN")
+  )
   
   state := nil // use for determining multi-part symbols (such as strings split over multiple lines or by special symbols
   
   containsAny := method(sym,
-    self embeddedSymbols foreach(i, if(sym == i, return false)) // prevent recursion
-    self embeddedSymbols foreach(i, if(sym containsSeq(i), return true))
+    self embeddedSymbols keys foreach(i, if(sym == i, return false)) // prevent recursion
+    self embeddedSymbols keys foreach(i, if(sym containsSeq(i), return true))
     false
   )
   
@@ -24,7 +62,7 @@ Lexer := Object clone do(
     file readLines foreach(lineno ,line,
       line splitNoEmpties(" ") foreach(sym, // first fine-grained search, catches most
         if(sym beginsWithSeq("//"), break) // ignore comments
-        self analyze(file name, lineno, sym, output) //else, analyze
+        self analyze(file name, lineno + 1, sym, output) //else, analyze
       )
     )
     file close
@@ -47,17 +85,18 @@ Lexer := Object clone do(
   
   breakDown := method(sym, // break down complex symbols
     out := list
-    sym2 := sym
-    while(x := sym2 findSeqs(self embeddedSymbols),
-      head := sym2 exSlice(0, x index)
-      if(head size > 0, out append(head))
-      out append(x match)
-      sym2 = sym2 exSlice(x index + x match size)
-    )
+    x := sym findSeqs(self embeddedSymbols keys)
+    head := sym exSlice(0, x index)
+    if(head size > 0, out append(head))
+    out append(x match)
+    tail := sym exSlice(x index + x match size)
+    if(tail size > 0, out append(tail))
     out
   )
   
-  define := method(sym, // actually do the analysis here
-    symbol(sym)
+  define := method(sym, // actually do the analysis here    
+    out := self embeddedSymbols at(sym)
+    if(out == nil, out = symbol(sym))
+    out
   )
 )
