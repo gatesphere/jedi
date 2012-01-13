@@ -66,3 +66,5 @@ Clock register(fib_machine)
 
 // start the clock
 meditate
+
+sleep

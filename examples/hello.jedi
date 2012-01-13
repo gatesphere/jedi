@@ -35,3 +35,5 @@ Clock register(echo_machine)
 
 // start the clock
 meditate
+
+sleep
