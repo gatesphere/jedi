@@ -4,7 +4,6 @@
 // TODO:
 // define(sym)
 // detect strings
-// prevent multiple splits... ++ into +,+ and etc.
 
 
 Lexer := Object clone do(
