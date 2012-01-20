@@ -1,17 +1,13 @@
 // jedi programming language
 // Jacob M. Peck
 
-// TODO:
-// define(sym)
-// detect strings
-
-
 Lexer := Object clone do(
   version := "January 2012"
   
   clone := method(self) // singleton
   
   embeddedSymbols := Map with(
+    "\"", symbol("STRING_QUOTE"),
     "--", symbol("BLOCK_DELINEATOR"),
     "reflect", symbol("KW_REFLECT"),
     "consider", symbol("KW_CONSIDER"),
@@ -65,20 +61,23 @@ Lexer := Object clone do(
       )
     )
     file close
+    output = self refactorStrings(output)
     //output println
-    nil
+    //output foreach(i, writeln(i))
+    //nil // for testing purposes
+    output
   )
   
   analyze := method(filename, lineno, sym, output,
     if(self containsAny(sym), 
-      writeln("               --> Complex symbol encountered!");
+      //writeln("               --> Complex symbol encountered!"); // testing
       self breakDown(sym) foreach(i,  // hidden recursion :)
         self analyze(filename, lineno, i, output)
       )
       return;
     )
     t := tuple(define(sym),sym,filename,lineno)
-    t println
+    //t println
     output append(t)
   )
   
@@ -95,7 +94,35 @@ Lexer := Object clone do(
   
   define := method(sym, // actually do the analysis here    
     out := self embeddedSymbols at(sym)
-    if(out == nil, out = symbol(sym))
+    if(out == nil, out = symbol("IDENTIFIER"))
+    out
+  )
+  
+  refactorStrings := method(in,
+    //writeln("Called refactor strings...")
+    out := list
+    state := false
+    lineno := 0
+    gather := list
+    in foreach(i,
+      //writeln(i);
+      if(state == false,
+        if(i first == symbol("STRING_QUOTE"),
+          //writeln("STRING ENCOUNTERED!");
+          state = true;
+          lineno = i at(3),
+          out append(i)
+        ),
+        if(i first == symbol("STRING_QUOTE"),
+          //writeln("STRING CLOSED.");
+          state = false;
+          out append(tuple(symbol("STRING"), gather join(" "), i third, lineno));
+          gather = list;
+          lineno = 0,
+          gather append(i second)
+        )
+      )
+    )
     out
   )
 )
