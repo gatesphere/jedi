@@ -30,6 +30,7 @@ Lexer := Object clone do(
     ":>", symbol("OP_ATTACH"),
     "++", symbol("OP_CONCATENATE"),
     "::", symbol("KW_BEHAVIOR"),
+    "==", symbol("OP_EQUALS"),
     "+", symbol("OP_PLUS"),
     "-", symbol("OP_MINUS"),
     "*", symbol("OP_TIMES"),
