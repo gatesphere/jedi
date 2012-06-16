@@ -7,6 +7,7 @@ Disturbance := Object clone do(
   data := nil
   filter ::= block(true) // unfiltered by default
   parent := nil
+  marked := false
   
   // each disturbance is unique
   init := method(
@@ -15,7 +16,11 @@ Disturbance := Object clone do(
     self data = nil
     self filter = block(true)
     self parent = nil
+    self marked = false
   )
+  
+  mark := method(self marked = true)
+  unmark := method(self marked = false)
   
   setDestination := method(contemplation,
     if(contemplation type != "Contemplation",
@@ -46,13 +51,14 @@ Disturbance := Object clone do(
     //writeln("fed data: " .. in)
     self data = in
     //writeln(self data)
+    self unmark
     self
   )
   
   // load
   load := method(
     //writeln("disturbance loading...")
-    if (self data != nil,
+    if (self marked and self data != nil,
       self destination feed(self data);
       self data = nil
     )

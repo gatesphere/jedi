@@ -72,7 +72,9 @@ Meditation := Object clone do(
   // load
   load := method(
     //writeln("meditation loading...")
+    self contemplations foreach(c, c @@mark)
     self contemplations foreach(c, c @@load)
+    self contemplations foreach(c, c @@unmark)
     if(self isEmpty and self isSealed,
       self unseal
     )

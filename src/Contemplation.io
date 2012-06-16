@@ -6,6 +6,7 @@ Contemplation := Object clone do(
   disturbances := list
   data := nil
   parent := nil
+  marked := false
   
   // each contemplation is unique
   init := method(
@@ -13,6 +14,17 @@ Contemplation := Object clone do(
     self disturbances = list
     self data = nil
     self parent = nil
+    self marked = false
+  )
+  
+  mark := method(
+    self disturbances foreach(d, d @@mark)
+    self marked = true
+  )
+  
+  unmark := method(
+    self disturbances foreach(d, d @@unmark)
+    self marked = false
   )
   
   // is it empty?
@@ -50,6 +62,7 @@ Contemplation := Object clone do(
   feed := method(in,
     //writeln("c fed data: " .. in)
     self data = in
+    self unmark
     self
   )
   
@@ -60,7 +73,7 @@ Contemplation := Object clone do(
     self disturbances foreach(d, d @@load)
     // delegate to proper disturbance
     self disturbances foreach(d,
-      if(self data != nil and d condition(self data),
+      if(self marked and self data != nil and d condition(self data),
         d @@feed(self data); 
         self data = nil;
         break
